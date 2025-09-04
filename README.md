@@ -33,8 +33,8 @@ Il analyse une URL donnée et extrait plusieurs **features** (longueur, présenc
 
 ### 1. Cloner le projet
 
-git clone https://github.com/ton-pseudo/phishguard.git
-cd phishguard
+git clone https://github.com/SHERKO10/PhishEye
+cd PhishEye
 
 
 
@@ -87,3 +87,8 @@ Vous êtes libre de l’utiliser, le modifier et le partager
 
 Projet développé par SHERKO, étudiant en réseaux et cybersécurité.
 N’hésitez pas à contribuer ou proposer des améliorations via des Pull Requests 🚀
+
+
+
+
+
