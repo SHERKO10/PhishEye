@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishEye - Analyse de Liens</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #121212; color: #e0e0e0; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background-color: #1e1e1e; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 700px; text-align: center; }
+        h1 { color: #4db8ff; margin-bottom: 30px; }
+        input[type="text"] { width: 80%; padding: 12px; border-radius: 6px; border: 1px solid #444; background-color: #2a2a2a; color: #fff; font-size: 16px; }
+        .buttons { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
+        button { padding: 12px 25px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; transition: all 0.2s ease; }
+        .scan-btn { background-color: #007bff; color: white; }
+        .scan-btn:hover { background-color: #0056b3; }
+        .add-btn { background-color: #dc3545; color: white; }
+        .add-btn:hover { background-color: #a71d2a; }
+        .result-box { margin-top: 30px; padding: 20px; border: 1px solid #444; border-radius: 8px; text-align: left; background-color: #2a2a2a; }
+        .result-box h2 { margin-top: 0; }
+        .verdict-Malveillant { color: #ff4d4d; }
+        .verdict-Suspect { color: #ffa500; }
+        .verdict-Légitime { color: #4caf50; }
+        .message { margin-top: 20px; padding: 10px; border-radius: 6px; }
+        .message-success { background-color: #28a745; color: white; }
+        .message-info { background-color: #17a2b8; color: white; }
+        .message-error { background-color: #dc3545; color: white; }
+        textarea { width: 80%; padding: 12px; border-radius: 6px; border: 1px solid #444; background-color: #2a2a2a; color: #fff; font-size: 14px; min-height: 80px; }
+        hr { border-color: #444; margin: 40px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PhishEye</h1>
+
+        <!-- Formulaire principal pour scanner et ajouter -->
+        <form method="post">
+            {% csrf_token %} <!-- Sécurité Django, toujours l'inclure ! -->
+            <input type="text" name="url_input" placeholder="Entrez une URL à analyser ou à ajouter..." required>
+            <div class="buttons">
+                <button type="submit" name="scan_action" class="scan-btn">Scanner le lien</button>
+                <button type="submit" name="add_action" class="add-btn">Ajouter à la liste noire</button>
+            </div>
+        </form>
+
+        <!-- Affiche les messages (ex: "URL ajoutée") ou les erreurs -->
+        {% if message %}
+            <p class="message message-success">{{ message }}</p>
+        {% elif error %}
+            <p class="message message-error">{{ error }}</p>
+        {% endif %}
+
+        <!-- Affiche le résultat de l'analyse -->
+        {% if verdict %}
+            <div class="result-box">
+                <h2>Résultat de l'analyse</h2>
+                <p><strong>Verdict : </strong><span class="verdict-{{ verdict }}">{{ verdict }}</span></p>
+                <p><strong>Source : </strong>{{ source }}</p>
+                <p><strong>Détails : </strong><br><pre>{{ details|linebreaksbr }}</pre></p>
+            </div>
+        {% endif %}
+
+        <hr>
+
+        <!-- Formulaire pour les suggestions -->
+        <form method="post">
+            {% csrf_token %}
+            <h3>Suggérer une amélioration</h3>
+            <textarea name="suggestion_text" placeholder="Votre suggestion ici..."></textarea>
+            <div class="buttons">
+                <button type="submit" name="suggestion_action" class="scan-btn">Envoyer</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>```
+
