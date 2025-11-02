@@ -139,16 +139,23 @@ def analyse_url(url):
         return {"verdict": Cache.Verdict.INCONNU, "details": "URL invalide ou impossible à analyser !", "source" : "Analyse PhisEye" }
 
     #ici on vérifie si le domaine est dans la liste blanche
-    est_ListeBlanche = any(
-        domain.endswith(f".{listeblanche.domain}") or domain == listeblanche.domain
-        for listeblanche in ListeBlanche.objects.all()
-    )  
+    parts = extraire_domain.split('.')
+    domain_to_check = []
+    if len(parts) > 1:
+            # On teste le domaine simple ('google.com') et le domaine parent ('google.com' pour 'mail.google.com')
+            domain_to_check.append('.'.join(parts[-2:])) 
+        # On teste le domaine avec www ('www.google.com')
+    domain_to_check.append(f"www.{'.'.join(parts[-2:])}")
+        # On teste le domaine exact ('mail.google.com')
+    domain_to_check.append(extraire_domain)
+
+    est_ListeBlanche = ListeBlanche.objects.filter(domain__in=domain_to_check).exists()
+
 
     if est_ListeBlanche: 
 
         verdict = Cache.Verdict.LEGITIME
         details = f"Le domaine {domain} est reconnu comme fiable"
-        source = "Base de données PhishEye (Liste Blanche)"
 
         Cache.objects.get_or_create(
             url=url,
