@@ -1,3 +1,10 @@
+asgiref==3.10.0
+Django==5.2.7
+gunicorn==23.0.0
+packaging==25.0
+python-decouple==3.8
+sqlparse==0.5.3
+whitenoise==6.11.0
 aardwolf==0.2.13
 adblockparser==0.7
 aesedb==0.1.3

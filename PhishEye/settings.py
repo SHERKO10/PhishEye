@@ -1,8 +1,9 @@
 from pathlib import Path
 import os # Assure-toi que os est importé
+from decouple import config
 
 
-SECRET_KEY = 'django-insecure-un-secret-ici-peu-importe-pour-le-moment'
+SECRET_KEY = config('SECRET_KEY')
 
 
 INSTALLED_APPS = [
@@ -23,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 ROOT_URLCONF = 'PhishEye.urls'
-DEBUG = True 
+DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 DATABASES = {
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',      # ⚠️ requis
     'django.middleware.common.CommonMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',   # ⚠️ requis
     'django.contrib.messages.middleware.MessageMiddleware',      # ⚠️ requis
@@ -64,6 +66,8 @@ MIDDLEWARE = [
 ]
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
