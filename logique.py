@@ -172,20 +172,13 @@ def analyse_url(url):
     
 
     #on vérifie maintenant voir si le lien est dans la liste noir
+    if URLMalveillants.objects.filter(url=url).exists():
+        verdict = Cache.VerdictChoices.MALICIOUS
+        details = f"L'URL exacte est référencée dans la base de données de menaces URLhaus."
+        Cache.objects.create(url=url, verdict=verdict, details=details)
+        return {"verdict": verdict, "details": details, "source": "Blacklist"}
 
-    if URLMalveillants.objects.filter(url=url).exists() or \
-        URLMalveillants.objects.filter(url__icontains=domain).exists():
-        verdict = Cache.Verdict.MALVEILLANT
-        details = f"Le lien {domain} est reconnu comme malveillant par la base de données de PhishEye"
-    
 
-
-        Cache.objects.get_or_create(
-            url=url,
-            defaults= {'verdict':verdict, 'details':details}
-        )
-        return {'verdict':verdict, 'details':details, 'source':'Liste Noire'}
-    
     
     #Maintenant si le lien n'est ni dans la liste blanche ni dans la liste noir on va faire une analyse approfondie
 
