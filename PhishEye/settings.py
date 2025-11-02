@@ -3,7 +3,17 @@ import os # Assure-toi que os est importé
 from decouple import config
 
 
-SECRET_KEY = config('SECRET_KEY')
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = config('SECRET_KEY', default='changeme')
+DEBUG = config('DEBUG', default=False, cast=bool)
+
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
+
+
 
 
 INSTALLED_APPS = [
@@ -20,12 +30,11 @@ INSTALLED_APPS = [
     'frontend',
 ]
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 ROOT_URLCONF = 'PhishEye.urls'
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 DATABASES = {
     'default': {
